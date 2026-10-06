@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import re
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -16,6 +17,12 @@ from .agent.agent import create_agent
 from .agent.state import ConversationState
 from .config.settings import PROJECT_ROOT, ConfigError, Settings, load_settings
 from .utils.logging import setup_logging
+
+if os.environ.get("VERCEL") == "1":
+    if not str(os.environ.get("CHROMA_PATH", "./.chroma")).startswith("/"):
+        os.environ["CHROMA_PATH"] = "/tmp/.chroma"
+    os.environ["HOME"] = "/tmp"
+    os.environ.setdefault("XDG_CACHE_HOME", "/tmp/.cache")
 
 logger = logging.getLogger(__name__)
 
@@ -36,11 +43,29 @@ class ChatRequest(BaseModel):
     message: str
 
 
+def _ensure_knowledge_loaded(settings: Settings) -> None:
+    from .rag.embeddings import Embedder
+    from .rag.ingestion import chunk_directory
+    from .rag.vector_store import VectorStore
+
+    store = VectorStore(settings.chroma_path)
+    if store.count() > 0:
+        return
+    chunks = chunk_directory(settings.knowledge_dir)
+    embedder = Embedder(settings.embedding_model)
+    store.add(chunks, embedder.embed_texts([c.text for c in chunks]))
+    logger.info("knowledge_reingested chunks=%d", len(chunks))
+
+
 def _init_agent() -> None:
     global _agent, _state, _settings, _retriever
     settings = load_settings()
     setup_logging(settings.log_level)
     _settings = settings
+    try:
+        _ensure_knowledge_loaded(settings)
+    except Exception:
+        logger.exception("knowledge_reingest_failed")
     _agent = create_agent(settings)
     _state = ConversationState()
     _retriever = None

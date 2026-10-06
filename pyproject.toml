@@ -7,6 +7,7 @@ dependencies = [
     "openai>=1.40",
     "fastapi>=0.110",
     "uvicorn>=0.30",
+    "chromadb>=0.5",
 ]
 
 [project.optional-dependencies]
@@ -28,3 +29,6 @@ where = ["backend"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["backend"]
+
+[tool.vercel]
+entrypoint = "backend.customer_support_agent.server:app"
