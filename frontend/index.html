@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support AI — Customer Support Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="i-headphones"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></g>
+    <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <g id="i-book"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-ticket"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 11v2"/><path d="M13 17v2"/></g>
+    <g id="i-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></g>
+    <g id="i-bot"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-truck"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></g>
+    <g id="i-refresh"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></g>
+    <g id="i-mappin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-file"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-paperclip"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></g>
+    <g id="i-send"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></g>
+    <g id="i-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></g>
+    <g id="i-menu"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+  </defs>
+</svg>
+
+<div class="app">
+  <div class="overlay" id="overlay" hidden></div>
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar-left" id="sidebarLeft" aria-label="Main navigation">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-headphones"/></svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Support AI</div>
+        <div class="brand-tagline">Always here to help</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <nav class="nav" aria-label="Sections">
+      <button class="nav-item active" id="navChat" aria-current="page">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-message"/></svg>
+        <span>Chat</span>
+      </button>
+      <button class="nav-item" id="navKnowledge">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-book"/></svg>
+        <span>Knowledge Base</span>
+      </button>
+      <button class="nav-item" aria-disabled="true" title="Not available in Version 1">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ticket"/></svg>
+        <span>Support Tickets</span>
+      </button>
+      <button class="nav-item" aria-disabled="true" title="Not available in Version 1">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-settings"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-status">
+      <div class="status-row">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-title">AI Agent Online</span>
+      </div>
+      <div class="status-sub">Ready to assist you</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <header class="main-header">
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+      <div class="greeting">
+        <h1 id="viewTitle">Hello! &#128075;</h1>
+        <p id="viewSubtitle">I'm your AI customer support assistant. Ask me anything about your orders, products, refunds, or account.</p>
+      </div>
+      <button class="new-chat" id="newChat">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plus"/></svg>
+        <span>New chat</span>
+      </button>
+    </header>
+
+    <section class="chat-card" aria-label="Conversation">
+      <div class="chat-scroll" id="chatScroll" role="log" aria-live="polite" aria-relevant="additions">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-greeting">Hello! &#128075;</div>
+          <p class="empty-line">How can I help you today?</p>
+          <p class="empty-hint">Try asking about:</p>
+          <div class="suggestions">
+            <button class="suggestion">Track my order</button>
+            <button class="suggestion">What is your refund policy?</button>
+            <button class="suggestion">How do I return a product?</button>
+            <button class="suggestion">Contact support</button>
+          </div>
+        </div>
+      </div>
+
+      <form class="composer" id="composer" autocomplete="off">
+        <button type="button" class="icon-btn" id="attachBtn"
+                aria-label="Attachments are not available in this version" disabled>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-paperclip"/></svg>
+        </button>
+        <textarea id="input" rows="1" placeholder="Type your message..."
+                  aria-label="Message" maxlength="4000"></textarea>
+        <button type="submit" class="send-btn" id="sendBtn" aria-label="Send message">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-send"/></svg>
+          <span>Send</span>
+        </button>
+      </form>
+    </section>
+
+    <section class="kb-card" id="kbView" hidden aria-label="Knowledge Base">
+      <div class="kb-sidebar">
+        <div class="kb-search">
+          <input type="search" id="kbSearch" placeholder="Search knowledge..."
+                 aria-label="Search knowledge base">
+          <button id="kbSearchBtn" aria-label="Run search">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+        </div>
+        <div class="kb-docs" id="kbDocs">
+          <p class="kb-empty">Loading documents&hellip;</p>
+        </div>
+      </div>
+      <div class="kb-content" id="kbContent">
+        <div class="kb-placeholder">Select a document to read it, or search the knowledge base.</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar-right" aria-label="Support information">
+    <section class="card">
+      <div class="card-head">
+        <div class="avatar-ai small" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-bot"/></svg>
+        </div>
+        <div>
+          <h2 class="card-title">Support AI Agent</h2>
+          <div class="online-badge"><span class="status-dot" aria-hidden="true"></span> Online</div>
+        </div>
+      </div>
+      <p class="card-desc">I can help you with: orders, tracking, refunds, account issues, and more.</p>
+    </section>
+
+    <section class="card">
+      <h2 class="card-title">Quick Actions</h2>
+      <div class="quick-actions">
+        <button class="qa" data-q="Where is my order?">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-truck"/></svg>
+          <span>Track My Order</span>
+        </button>
+        <button class="qa" data-q="I'd like to request a refund. What is your refund policy?">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"/></svg>
+          <span>Request a Refund</span>
+        </button>
+        <button class="qa" data-q="Can I change my delivery address?">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mappin"/></svg>
+          <span>Change Delivery Address</span>
+        </button>
+        <button class="qa" data-q="What is your return policy?">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file"/></svg>
+          <span>View Return Policy</span>
+        </button>
+        <button class="qa" data-q="How do I contact human support?">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-headphones"/></svg>
+          <span>Contact Human Support</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="card-title">Recent Topics</h2>
+      <ul class="topics" id="topics">
+        <li class="topics-empty">No recent topics yet.</li>
+      </ul>
+    </section>
+
+    <section class="card help-card">
+      <div class="help-row">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lightbulb"/></svg>
+        <div>
+          <h2 class="help-title">Need more help?</h2>
+          <p class="help-desc">Type your question in the chat or use the quick actions above.</p>
+        </div>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
