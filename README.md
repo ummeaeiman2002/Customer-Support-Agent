@@ -30,7 +30,11 @@ before responding, and it explicitly says when the information isn't there.
 - **Local, free RAG** — Chroma vector store + ONNX embeddings
   (`all-MiniLM-L6-v2`) running on your machine, no embedding API costs
 - **Provider-agnostic LLM** — Groq (free), OpenAI, or Ollama via one env var
-- **CLI + localhost web UI** — terminal chat and a browser chat page
+- **Web UI + CLI** — three-column support dashboard (chat, knowledge browser,
+  quick actions) and a terminal chat
+- **Knowledge Base page** — browse company documents and run the same vector
+  search the agent uses
+- **API docs** — auto-generated Swagger UI at `/docs`
 - **Safe tool execution** — AST-based calculator, argument validation,
   whitelisted tools only, bounded tool loops
 
@@ -55,13 +59,21 @@ Agent (orchestration loop)
 ```
 
 ```text
-src/customer_support_agent/
+backend/customer_support_agent/
 ├── agent/     agent.py (loop), prompts.py (instructions), state.py
 ├── llm/       client.py (OpenAI-compatible API wrapper)
 ├── rag/       ingestion.py, embeddings.py, vector_store.py, retriever.py
 ├── tools/     calculator.py
 ├── config/    settings.py (env-driven configuration)
-└── utils/     logging.py
+├── utils/     logging.py
+└── server.py  FastAPI app (chat API, knowledge API, static UI, Swagger)
+
+frontend/
+├── index.html   three-column layout
+├── styles.css   navy/blue design system
+└── app.js       chat state, knowledge base, API layer
+
+knowledge/       company documents (RAG source)
 ```
 
 ## Workflow
@@ -123,7 +135,8 @@ are validated before execution, and the tool loop is bounded by
 | LLM | Groq `openai/gpt-oss-120b` (free tier) | free, fast, tool calling |
 | Vector store | Chroma (local, persistent) | no server, simple |
 | Embeddings | `all-MiniLM-L6-v2` via ONNX | local, free, no API |
-| UI | stdlib `http.server` + CLI | zero extra dependencies |
+| Backend | FastAPI + uvicorn | typed API, free Swagger docs |
+| Frontend | vanilla HTML/CSS/JS | zero frameworks, no build step |
 | Tests | pytest | simple, mocks for all live calls |
 
 Any OpenAI-compatible endpoint works by changing `.env`
@@ -148,8 +161,8 @@ Agent: The AuroraBuds Pro costs $129.00.
 ## Installation
 
 ```bash
-git clone <repo-url>
-cd customer-support-agent
+git clone https://github.com/ummeaeiman2002/Customer-Support-Agent.git
+cd Customer-Support-Agent
 
 python -m venv .venv
 .venv\Scripts\activate          # Windows
@@ -193,11 +206,25 @@ python scripts/ingest.py
 
 # 2a. Web UI
 python -m customer_support_agent.server
-#    → http://127.0.0.1:8000
+#    → chat:    http://127.0.0.1:8000
+#    → API docs: http://127.0.0.1:8000/docs
 
 # 2b. CLI
 python -m customer_support_agent.main
 ```
+
+**Web UI** — three-column support dashboard: sidebar navigation, chat with
+the live agent, knowledge-base browser, quick actions.
+
+**HTTP API:**
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/api/chat` | POST | `{"message": "..."}` → `{"reply": "..."}` |
+| `/api/reset` | POST | reset conversation state |
+| `/api/knowledge` | GET | list knowledge documents |
+| `/api/knowledge/{name}` | GET | read one document |
+| `/api/knowledge/search?q=` | GET | vector search over the knowledge base |
 
 Changing businesses = edit `knowledge/*.md` + re-run ingestion. The agent
 core is untouched.
@@ -231,9 +258,9 @@ bounded), ingestion, vector store, retrieval thresholds (§14).
 
 ## Future Improvements
 
-- FastAPI layer + real frontend (V5)
 - Memory and conversation persistence (V4)
 - Web search, order lookup, CRM tools (V3, V7)
+- Support tickets and settings pages (V6)
 - Human-in-the-loop escalation (V9)
 - Multi-agent workflows (V10)
 
