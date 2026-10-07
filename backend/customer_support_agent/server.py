@@ -37,6 +37,7 @@ _agent: Any = None
 _state: ConversationState | None = None
 _settings: Settings | None = None
 _retriever: Any = None
+_config_error: str | None = None
 
 
 class ChatRequest(BaseModel):
@@ -58,15 +59,24 @@ def _ensure_knowledge_loaded(settings: Settings) -> None:
 
 
 def _init_agent() -> None:
-    global _agent, _state, _settings, _retriever
-    settings = load_settings()
+    global _agent, _state, _settings, _retriever, _config_error
+    try:
+        settings = load_settings()
+    except ConfigError as exc:
+        _config_error = str(exc)
+        _state = ConversationState()
+        logger.error("config_error message=%s", exc)
+        return
     setup_logging(settings.log_level)
     _settings = settings
     try:
         _ensure_knowledge_loaded(settings)
     except Exception:
         logger.exception("knowledge_reingest_failed")
-    _agent = create_agent(settings)
+    try:
+        _agent = create_agent(settings)
+    except Exception:
+        logger.exception("agent_creation_failed")
     _state = ConversationState()
     _retriever = None
     try:
@@ -100,13 +110,51 @@ app = FastAPI(
 
 
 @app.get("/")
-def read_index() -> FileResponse:
-    return FileResponse(FRONTEND_DIR / "index.html")
+def read_index():
+    index = FRONTEND_DIR / "index.html"
+    if not index.is_file():
+        return JSONResponse(
+            status_code=503,
+            content={"error": "Frontend files not found.", "path": str(index)},
+        )
+    return FileResponse(index)
 
 
 @app.get("/index.html")
-def read_index_alias() -> FileResponse:
-    return FileResponse(FRONTEND_DIR / "index.html")
+def read_index_alias():
+    return read_index()
+
+
+@app.get("/api/health")
+def health() -> dict[str, Any]:
+    info: dict[str, Any] = {
+        "status": "ok",
+        "vercel": os.environ.get("VERCEL") == "1",
+        "config_error": _config_error,
+        "llm_configured": _settings is not None,
+        "agent_ready": _agent is not None,
+        "retriever_ready": _retriever is not None,
+        "static_dir": str(FRONTEND_DIR),
+        "static_dir_exists": FRONTEND_DIR.is_dir(),
+        "project_root": str(PROJECT_ROOT),
+        "cwd": os.getcwd(),
+    }
+    knowledge_dir = (
+        _settings.knowledge_dir if _settings is not None else PROJECT_ROOT / "knowledge"
+    )
+    info["knowledge_dir"] = str(knowledge_dir)
+    info["knowledge_exists"] = knowledge_dir.is_dir()
+    if _settings is not None:
+        info["chroma_path"] = str(_settings.chroma_path)
+        info["llm_provider"] = _settings.llm_provider
+        info["llm_model"] = _settings.llm_model
+        try:
+            from .rag.vector_store import VectorStore
+
+            info["kb_chunks"] = VectorStore(_settings.chroma_path).count()
+        except Exception as exc:
+            info["kb_chunks_error"] = f"{type(exc).__name__}: {exc}"
+    return info
 
 
 @app.post("/api/reset")
@@ -202,6 +250,13 @@ def chat(req: ChatRequest) -> JSONResponse:
     if _state is None:
         _state = ConversationState()
 
+    if _agent is None:
+        detail = (
+            _config_error
+            or "Agent is still starting up. Please retry in a moment."
+        )
+        return JSONResponse(status_code=503, content={"error": detail})
+
     logger.info("agent_request_received length=%d", len(message))
     try:
         reply = _agent.run(message, _state)
@@ -213,7 +268,10 @@ def chat(req: ChatRequest) -> JSONResponse:
     return JSONResponse(content={"reply": reply})
 
 
-app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+if FRONTEND_DIR.is_dir():
+    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+else:
+    logger.error("frontend_dir_missing path=%s", FRONTEND_DIR)
 
 
 def main() -> None:
