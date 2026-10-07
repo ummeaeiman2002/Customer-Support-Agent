@@ -29,6 +29,3 @@ where = ["backend"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["backend"]
-
-[tool.vercel]
-entrypoint = "backend.customer_support_agent.server:app"

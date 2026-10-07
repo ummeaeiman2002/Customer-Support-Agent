@@ -4,6 +4,7 @@
   var ERROR_FALLBACK =
     "Sorry, I couldn't process your request right now. Please try again.";
   var MAX_TOPICS = 5;
+  var API_BASE = (window.__API_BASE__ || "").replace(/\/$/, "");
 
   var chatScroll = document.getElementById("chatScroll");
   var emptyState = document.getElementById("emptyState");
@@ -26,7 +27,7 @@
 
   var api = {
     sendMessage: function (text) {
-      return fetch("/api/chat", {
+      return fetch(API_BASE + "/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text })
@@ -40,7 +41,7 @@
       });
     },
     reset: function () {
-      return fetch("/api/reset", { method: "POST" });
+      return fetch(API_BASE + "/api/reset", { method: "POST" });
     }
   };
 
@@ -509,7 +510,7 @@
 
   function loadKB() {
     if (kbLoaded) return;
-    fetch("/api/knowledge")
+    fetch(API_BASE + "/api/knowledge")
       .then(function (r) {
         return r.json();
       })
@@ -558,7 +559,7 @@
   function openDoc(name) {
     kbContent.innerHTML =
       '<div class="kb-placeholder">Loading ' + escapeHtml(name) + "…</div>";
-    fetch("/api/knowledge/" + encodeURIComponent(name))
+    fetch(API_BASE + "/api/knowledge/" + encodeURIComponent(name))
       .then(function (r) {
         return r.json();
       })
@@ -581,7 +582,7 @@
     var q = kbSearch.value.trim();
     if (!q) return;
     kbContent.innerHTML = '<div class="kb-placeholder">Searching…</div>';
-    fetch("/api/knowledge/search?q=" + encodeURIComponent(q))
+    fetch(API_BASE + "/api/knowledge/search?q=" + encodeURIComponent(q))
       .then(function (r) {
         return r.json();
       })
