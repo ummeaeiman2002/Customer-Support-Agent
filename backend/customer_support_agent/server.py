@@ -160,6 +160,11 @@ def health() -> dict[str, Any]:
         info["chroma_path"] = str(_settings.chroma_path)
         info["llm_provider"] = _settings.llm_provider
         info["llm_model"] = _settings.llm_model
+        import hashlib
+
+        info["llm_key_fp"] = hashlib.sha256(
+            _settings.llm_api_key.encode()
+        ).hexdigest()[:8]
         try:
             from .rag.vector_store import VectorStore
 
