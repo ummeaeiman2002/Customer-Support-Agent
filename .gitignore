@@ -18,3 +18,4 @@ venv/
 # Project data
 .chroma/
 *.log
+_logs/
